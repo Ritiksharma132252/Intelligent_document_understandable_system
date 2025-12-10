@@ -1,0 +1,8 @@
+# requirements.txt
+flask
+google-genai
+python-dotenv
+pypdf
+langchain-community  # For PDF loading and text splitting
+faiss-cpu
+sentence-transformers

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Document Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Intelligent Document Assistant</h1>
+
+        <div class="card upload-section">
+            <h2>Step 1: Upload Document (PDF)</h2>
+            <input type="file" id="pdfFile" accept=".pdf">
+            <button onclick="uploadFile()">Process Document</button>
+            <p id="uploadStatus" class="status-message"></p>
+        </div>
+
+        <div class="card query-section">
+            <h2>Step 2: Ask a Question</h2>
+            <textarea id="userQuery" placeholder="What is the total value of the invoice? or What is the main point of the document?" rows="3" disabled></textarea>
+            <button onclick="sendQuery()" id="queryButton" disabled>Get Answer</button>
+        </div>
+
+        <div class="card response-section">
+            <h2>AI Response</h2>
+            <div id="aiResponse" class="response-box">
+                Your answers will appear here.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const uploadStatus = document.getElementById('uploadStatus');
+        const pdfFile = document.getElementById('pdfFile');
+        const userQuery = document.getElementById('userQuery');
+        const queryButton = document.getElementById('queryButton');
+        const aiResponseDiv = document.getElementById('aiResponse');
+
+        // Function to handle the PDF upload
+        async function uploadFile() {
+            const file = pdfFile.files[0];
+            if (!file) {
+                uploadStatus.textContent = "Please select a file first.";
+                uploadStatus.className = 'status-message error';
+                return;
+            }
+
+            uploadStatus.textContent = "Processing document... Please wait (this may take a moment).";
+            uploadStatus.className = 'status-message loading';
+
+            // Use FormData to send the file to the Flask route
+            const formData = new FormData();
+            formData.append('pdf_file', file);
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                const data = await response.json();
+
+                if (response.ok) {
+                    uploadStatus.textContent = data.message;
+                    uploadStatus.className = 'status-message success';
+                    // Enable the query box and button upon successful processing
+                    userQuery.disabled = false;
+                    queryButton.disabled = false;
+                } else {
+                    uploadStatus.textContent = data.message || 'Error during file upload.';
+                    uploadStatus.className = 'status-message error';
+                }
+            } catch (error) {
+                uploadStatus.textContent = 'Network error during file processing.';
+                uploadStatus.className = 'status-message error';
+            }
+        }
+
+        // Function to handle the question submission
+        async function sendQuery() {
+            const query = userQuery.value;
+            if (!query.trim()) {
+                alert("Please enter a question.");
+                return;
+            }
+
+            // Show loading state
+            aiResponseDiv.innerHTML = "Thinking...";
+            queryButton.disabled = true;
+
+            try {
+                const response = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 'query': query }),
+                });
+
+                const data = await response.json();
+                
+                // Display the response
+                if (response.ok && data.status === 'success') {
+                    // Convert newlines to HTML breaks for better readability
+                    aiResponseDiv.innerHTML = data.response.replace(/\n/g, '<br>');
+                } else {
+                    aiResponseDiv.innerHTML = `Error: ${data.message}`;
+                    aiResponseDiv.style.color = 'red';
+                }
+            } catch (error) {
+                aiResponseDiv.innerHTML = "Network or API call failed.";
+                aiResponseDiv.style.color = 'red';
+            } finally {
+                queryButton.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

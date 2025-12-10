@@ -1,0 +1,92 @@
+/* static/style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+}
+
+h1 {
+    color: #1e88e5;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: #e3f2fd;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #1565c0;
+    margin-top: 0;
+    border-bottom: 1px solid #bbdefb;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+input[type="file"], textarea, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+    border: 1px solid #90caf9;
+}
+
+button {
+    background-color: #42a5f5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover:not(:disabled) {
+    background-color: #1e88e5;
+}
+
+button:disabled {
+    background-color: #bdbdbd;
+    cursor: not-allowed;
+}
+
+.response-box {
+    min-height: 100px;
+    border: 1px solid #90caf9;
+    padding: 15px;
+    background: white;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+.status-message {
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.success { background-color: #c8e6c9; color: #2e7d32; }
+.error { background-color: #ffcdd2; color: #c62828; }
+.loading { background-color: #fff9c4; color: #f9a825; }
