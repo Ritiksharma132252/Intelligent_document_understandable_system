@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from llm_service import create_vector_store, generate_rag_response, FAISS_INDEX_PATH
 import os
 
+
 app = Flask(__name__)
 # Set a temporary directory for uploaded files
 UPLOAD_FOLDER = 'uploads'
