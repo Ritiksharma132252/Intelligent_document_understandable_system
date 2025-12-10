@@ -10,6 +10,7 @@ import numpy as np
 
 # --- Configuration ---
 load_dotenv()
+
 os.environ['GOOGLE_API_KEY'] = os.getenv("GEMINI_API_KEY") # Set the API key for the google-genai library
 MODEL_EMBEDDING = 'all-MiniLM-L6-v2'
 MODEL_LLM = 'gemini-2.5-flash'
